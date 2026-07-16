@@ -58,11 +58,11 @@ const MobileSidebar = ({ open, onClose }: Props) => {
 
                             <div>
                                 <p className="text-base font-bold text-[#1E2B6D]">
-                                    Virgin Travel
+                                    Nur-Star
                                 </p>
 
                                 <p className="text-xs text-gray-500">
-                                    Studio Dashboard
+                                    Shop
                                 </p>
                             </div>
                         </Link>

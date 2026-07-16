@@ -14,7 +14,7 @@ const MobileTopbar = ({ onMenuClick }: Props) => {
         <header className="flex items-center justify-between border-b border-gray-200 bg-white px-4 py-4 lg:hidden">
             <div>
                 <p className="text-sm font-semibold text-[#1E2B6D]">
-                    Virgin Travel Studio
+                    Nur-star
                 </p>
 
                 <p className="text-xs text-gray-500">
