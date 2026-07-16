@@ -24,7 +24,9 @@ const MultiImageInput: React.FC<Props> = ({
                                             allowReorder = false,
                                           }) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [previews, setPreviews] = useState<string[]>([]);
+  const [previews, setPreviews] = useState<
+    { url: string; isBlob: boolean }[]
+  >([]);
 
   useEffect(() => {
     if (!showPreviews) {
@@ -35,12 +37,12 @@ const MultiImageInput: React.FC<Props> = ({
     const objectUrls: string[] = [];
 
     const newPreviews = value.map((item) => {
-      if (typeof item === 'string') {
-        return item;
+      if (typeof item === "string") {
+        return { url: item, isBlob: false };
       }
       const blobUrl = URL.createObjectURL(item);
       objectUrls.push(blobUrl);
-      return blobUrl;
+      return { url: blobUrl, isBlob: true };
     });
 
     setPreviews(newPreviews);
@@ -110,13 +112,13 @@ const MultiImageInput: React.FC<Props> = ({
 
       {showPreviews && previews.length > 0 && (
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-5 mt-2">
-          {previews.map((url, index) => (
+          {previews.map((preview, index) => (
             <div
               key={index}
               className="relative aspect-square rounded-lg border border-input overflow-hidden bg-background group"
             >
               <img
-                src={imageUrl + url}
+                src={preview.isBlob ? preview.url : imageUrl + preview.url}
                 alt={`Preview ${index + 1}`}
                 className="h-full w-full object-cover"
               />

@@ -33,6 +33,7 @@ export default function EditProduct() {
     <>
       <ProductForm
         initialValues={{
+          id: product?.id,
           title: product?.title,
           description: product.description,
           price: product.price,

@@ -10,11 +10,8 @@ const productUpdateForm = (data: SparesMutation) => {
 
    if (key === "images" && data.images.length > 0) {
      data.images.forEach((item) => {
-       if (typeof item === "string") {
-         formData.append("images", item);
-       } else {
-         formData.append("images", item);
-       }
+      if (typeof item === 'string') formData.append("existing_image_ids", item);
+      else formData.append("images", item);
      });
    } else if (Array.isArray(value)) {
      value.forEach((item) => {
@@ -65,8 +62,7 @@ export async function createSpare(data: SparesMutation) {
 
 export async function updateSpare(data: SparesMutation) {
   const formData = productUpdateForm(data);
-
-  const result = await axiosApi.put(`/truck/spares${data.id}`, formData);
+  const result = await axiosApi.put(`/truck/spares/${data.id}`, formData);
   return result.data;
 }
 

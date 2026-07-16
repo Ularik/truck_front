@@ -73,7 +73,7 @@ export default function ProductForm({ editFunc, initialValues }: Props) {
   } = initialValues ? useUpdateSpare() : useCreateSpare();
 
   const onSubmit = (data: SparesMutation) => {
-    console.log('submit');
+
     mutate(data, {
       onSuccess: () => {
         router.push('/products')
