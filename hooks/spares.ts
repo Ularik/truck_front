@@ -11,7 +11,7 @@ export function useSpares (filters: SearchFilters | undefined) {
 
 export function useDetailSpare(id: string) {
   return useQuery({
-    queryKey: ['spare'],
+    queryKey: ['spare', id],
     queryFn: () => getOneSpare(id),
   })
 };
