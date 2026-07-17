@@ -20,6 +20,10 @@ export default function CardsList({ filters }: Props) {
   const { data: response, refetch } = useSpares(pagingFilters);
 
   useEffect(() => {
+    refetch();
+  }, [page])
+
+  useEffect(() => {
     setPage(1)
     refetch();
   }, [filters]);
