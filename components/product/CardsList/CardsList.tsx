@@ -8,6 +8,16 @@ import { useEffect, useState } from "react";
 import { useDeleteSpare } from "@/hooks/spares";
 import { Spinner } from "@/components/ui/spinner";
 import { toast } from "sonner";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+
 
 interface Props {
   filters?: SearchFilters;
@@ -28,14 +38,18 @@ export default function CardsList({ filters }: Props) {
     refetch();
   }, [filters]);
 
+
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<number | Boolean>(false);
   const { mutate: deleteSpare, isPending } = useDeleteSpare();
 
-  const deleteProd = (id: number) => {
-    deleteSpare(id, {
+  const deleteProd = () => {
+    if (typeof isDeleteDialogOpen === 'number')
+    deleteSpare(isDeleteDialogOpen, {
       onError: (error) => {
         toast.error(error.message, { position: 'top-center'});
       }
     });
+    setIsDeleteDialogOpen(false);
   }
 
   return (
@@ -51,7 +65,7 @@ export default function CardsList({ filters }: Props) {
             <ProductCard
               key={product.id}
               product={product}
-              delFunc={deleteProd}
+              delFunc={(id: number) => setIsDeleteDialogOpen(id)}
             />
           ))
         ) : (
@@ -75,6 +89,36 @@ export default function CardsList({ filters }: Props) {
           />
         </div>
       )}
+      <Dialog
+        open={Boolean(isDeleteDialogOpen)}
+        onOpenChange={setIsDeleteDialogOpen}
+      >
+        <DialogContent>
+          <DialogHeader className="pr-8">
+            <DialogTitle>
+              Вы уверены, что хотите удалить этот продукт?
+            </DialogTitle>
+          </DialogHeader>
+          <DialogDescription className="sr-only">
+            Диалоговое окно удаление товара
+          </DialogDescription>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setIsDeleteDialogOpen(false)}
+            >
+              Отмена
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={deleteProd}
+              disabled={isPending}
+            >
+              {isPending ? "Удаление..." : "Удалить"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </section>
   );
 }

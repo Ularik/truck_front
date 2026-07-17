@@ -24,9 +24,13 @@ export function useCreateSpare() {
 };
 
 export function useUpdateSpare() {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationKey: ["spare"],
     mutationFn: updateSpare,
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: ["spare"]})
+    }
   });
 };
 
