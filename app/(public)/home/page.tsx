@@ -1,4 +1,4 @@
-import CardsList from "@/components/product/CardsList/CardsList";
+import CardsListPublic from "@/components/product/CardsList/CardsListPublic";
 
 export default function Home() {
   return (
@@ -11,7 +11,7 @@ export default function Home() {
           Лучшие предложения этой недели.
         </p>
       </div>
-      <CardsList />
+      <CardsListPublic />
     </>
   );
 }

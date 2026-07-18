@@ -32,7 +32,7 @@ const LoginPage = () => {
 
     loginMutation.mutate(data, {
       onSuccess: () => {
-        router.push('dashboard');
+        router.push('admin/dashboard');
         reset();
       },
     });

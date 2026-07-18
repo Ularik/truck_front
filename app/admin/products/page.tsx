@@ -27,7 +27,7 @@ export default function Products() {
         <h1 className="mb-5 text-2xl font-bold">Товары</h1>
 
         <Button
-          onClick={() => router.push("/products/create")}
+          onClick={() => router.push("products/create")}
           className="flex gap-1 bg-[#1E2B6D] text-white hover:bg-[#263890]"
         >
           <Plus />

@@ -1,5 +1,5 @@
 import axiosApi from "@/constants/axiosApi";
-import { SearchFilters, SparesApiResponse, SparesMutation } from "@/types/truck";
+import { SearchFilters, SparesApiResponse, SparesMutation, SparesDetail } from "@/types/truck";
 
 const productUpdateForm = (data: SparesMutation) => {
  const formData = new FormData();
@@ -48,7 +48,7 @@ export async function getSpares(
   return result.data;
 }
 
-export async function getOneSpare(id: string): Promise<SparesMutation> {
+export async function getOneSpare(id: string): Promise<SparesDetail> {
   const result = await axiosApi.get(`/truck/get-spares/${id}`);
   return result.data;
 }

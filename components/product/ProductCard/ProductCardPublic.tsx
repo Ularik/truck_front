@@ -1,21 +1,21 @@
 "use client";
 
-import { Heart, ShoppingCart, Trash2 } from "lucide-react";
+import { Heart, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { useState } from "react";
 import type { Spares } from "@/types/truck";
 import { imageUrl } from "@/constants/config";
-import ImageNotFount from "@/media/imageNotFound.jpeg"
+import ImageNotFount from "@/media/imageNotFound.jpeg";
 import { useRouter } from "next/navigation";
-
 
 interface ProductCardProps {
   product: Spares;
-  delFunc: (id: number) => void;
 }
 
-export function ProductCard({ product, delFunc }: ProductCardProps) {
+export function ProductCardPublic({
+  product,
+}: ProductCardProps) {
   const [isFavorite, setIsFavorite] = useState(false);
 
   const image = product.images[0]
@@ -33,7 +33,7 @@ export function ProductCard({ product, delFunc }: ProductCardProps) {
 
   return (
     <Card
-      onClick={() => router.push(`products/${product.id}`)}
+      onClick={() => router.push(`/products/${product.id}`)}
       className="group overflow-hidden rounded-xl border bg-card transition-all duration-300 hover:shadow-lg"
     >
       {/* Блок с изображением */}
@@ -62,17 +62,6 @@ export function ProductCard({ product, delFunc }: ProductCardProps) {
                   : "text-muted-foreground"
               }`}
             />
-          </Button>
-          <Button
-            variant="destructive"
-            size="icon"
-            className="h-8 w-8 rounded-full bg-background/80"
-            onClick={(e) => {
-              e.stopPropagation();
-              delFunc(product.id);
-            }}
-          >
-            <Trash2 />
           </Button>
         </div>
       </div>

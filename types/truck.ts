@@ -29,6 +29,18 @@ export interface SparesMutation {
   is_popular: boolean;
 }
 
+export interface SparesDetail {
+  id?: number;
+  title: string;
+  description: string | null;
+  category_id: number | undefined | null;
+  truck: number[];
+  price: number;
+  images: string[];
+  count: number;
+  is_popular: boolean;
+}
+
 
 export interface SparesApiResponse {
   count: number;
