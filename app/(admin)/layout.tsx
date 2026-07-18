@@ -6,6 +6,7 @@ import MobileTopbar from '@/components/dashboard/layout/MobileTopbar';
 import ProtectedLayout from '@/middleware/ProtectedLayout';
 import { type ReactNode, useState } from 'react';
 
+
 type Props = {
   children: ReactNode;
 };

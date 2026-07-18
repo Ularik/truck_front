@@ -7,6 +7,11 @@ export interface LoginMutation {
     password: string;
 }
 
+export interface UserData {
+  id: number;
+  user_name: string;
+}
+
 export interface LoginResponse {
   user_name: string;
   refresh: string;

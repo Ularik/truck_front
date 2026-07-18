@@ -1,10 +1,9 @@
-'use client';
+"use client";
 
-import type { ReactNode } from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, type ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
+import { useMe } from '@/hooks/users';
 
-import { useAuthStore } from '@/lib/store/userStore';
 
 type Props = {
     children: ReactNode;
@@ -12,22 +11,11 @@ type Props = {
 
 const ProtectedLayout = ({ children }: Props) => {
     const router = useRouter();
-
-    const [isHydrated, setIsHydrated] = useState(false);
-
-    const user = useAuthStore(state => state.user);
-    
+    const { data: user, isPending } = useMe();
 
     useEffect(() => {
-        setIsHydrated(useAuthStore.persist.hasHydrated());
-    }, []);
-
-    if (isHydrated && !user) {
-        router.replace("/login");
-        return;
-    }
-
-    if (!isHydrated) return <div className='flex justify-center items-center text-2xl'>Загрузка...</div>;
+        if (!isPending && !user) router.push("/login");
+    }, [user])
 
     return <>{children}</>;
 };

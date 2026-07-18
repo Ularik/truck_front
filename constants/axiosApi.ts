@@ -4,13 +4,13 @@ import { apiURL } from "./config";
 
 const axiosApi = axios.create({
   baseURL: apiURL,
+  withCredentials: true,
 });
+
 
 const logoutAndRedirect = async () => {
   try {
-    const { useAuthStore } = await import("@/lib/store/userStore");
-    useAuthStore.getState().logout();
-
+    console.log('logout');
   } catch (e) {
     console.log('Could not notify services about logout', e);
   }
@@ -19,6 +19,20 @@ const logoutAndRedirect = async () => {
     window.location.replace('/login');
   }
 };
+
+function getCookie(name: string) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop()?.split(";").shift();
+}
+
+axiosApi.interceptors.request.use((config) => {
+  const csrfToken = getCookie("csrftoken");
+  if (csrfToken) {
+    config.headers["X-CSRFToken"] = csrfToken;
+  }
+  return config;
+});
 
 axiosApi.interceptors.response.use(
     (response) => response,
@@ -35,17 +49,7 @@ axiosApi.interceptors.response.use(
         originalRequest._retry = true;
 
         try {
-          const { useAuthStore } = await import("@/lib/store/userStore");
-          const refreshToken = useAuthStore.getState().refreshToken;
-
-          const result = await axios.post(`${apiURL}/token/refresh`, {
-            refresh: refreshToken,
-          });
-          const { access } = result.data;
-          const setAccessToken = useAuthStore((state) => state.setAccessToken);
-          setAccessToken(access);
-
-          return axiosApi(originalRequest);
+          await logoutAndRedirect();
         } catch (refreshError) {
           await logoutAndRedirect();
 
@@ -57,24 +61,5 @@ axiosApi.interceptors.response.use(
   },
 );
 
-axiosApi.interceptors.request.use(
-  async (config) => {
-    try {
-      const { useAuthStore } = await import("@/lib/store/userStore");
-      const token = useAuthStore.getState().accessToken;
-
-      if (token) {
-        config.headers["Authorization"] = `Bearer ${token}`;
-      }
-    } catch (error) {
-      console.error("Ошибка при получении токена в интерцепторе:", error);
-    }
-
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  },
-);
 
 export default axiosApi;

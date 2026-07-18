@@ -5,20 +5,21 @@ import { usePathname, useRouter } from 'next/navigation';
 import clsx from 'clsx';
 import { LogOut } from 'lucide-react';
 import { dashboardMenuItems } from '@/constants/constants';
-import { useAuthStore } from '@/lib/store/userStore';
+import { useMe, useLogout } from '@/hooks/users';
+
 
 const Sidebar = () => {
   const pathname = usePathname();
   const router = useRouter();
 
-  const user = useAuthStore(state => state.user);
-  const logoutMutation = useAuthStore(state => state.logout);
+  const {data: user} = useMe();
+  const { mutate, isPending } = useLogout();
 
   if (!user) return null;
 
   const handleLogout = async () => {
     try {
-      logoutMutation();
+      mutate();
     } finally {
       router.push('/login');
     }
@@ -75,7 +76,7 @@ const Sidebar = () => {
 
           <button
             onClick={handleLogout}
-            // disabled={logoutMutation.isPending}
+            disabled={isPending}
             className="flex w-full items-center justify-center gap-2 rounded-2xl bg-red-500 px-4 py-3 text-sm font-medium text-white transition hover:bg-red-600 disabled:opacity-60"
           >
             <LogOut size={18} />

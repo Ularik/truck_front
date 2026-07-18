@@ -2,6 +2,6 @@ export const isDev = process.env.NODE_ENV === "development";
 
 // На продакшене (в Docker) запросы будут идти на тот же домен, где открыт сайт, в папку /api/
 // В режиме разработки (локально) будет использоваться localhost:8000 (или 8001)
-export const apiURL = isDev ? "http://127.0.0.1:8001/api" : "/api";
+export const apiURL = isDev ? "http://localhost:8001/api" : "/api";
 
-export const imageUrl = isDev ? "http://127.0.0.1:8001" : ""; // На продакшене картинки будут отдаваться с того же домена через Nginx /media/
+export const imageUrl = isDev ? "http://localhost:8001" : ""; // На продакшене картинки будут отдаваться с того же домена через Nginx /media/

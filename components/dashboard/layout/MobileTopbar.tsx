@@ -1,6 +1,6 @@
 'use client';
 
-import { useAuthStore } from '@/lib/store/userStore';
+import { useMe } from '@/hooks/users';
 import { Menu } from 'lucide-react';
 
 type Props = {
@@ -8,7 +8,7 @@ type Props = {
 };
 
 const MobileTopbar = ({ onMenuClick }: Props) => {
-    const user = useAuthStore(state => state.user);
+    const {data: user} = useMe();
 
     return (
         <header className="flex items-center justify-between border-b border-gray-200 bg-white px-4 py-4 lg:hidden">

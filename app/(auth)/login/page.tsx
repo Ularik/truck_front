@@ -1,19 +1,19 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-
 import { inputClass } from "@/constants/constants";
 import type { LoginMutation } from "@/types/user";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
-import { useAuthStore } from "@/lib/store/userStore";
-import { useLogin } from "@/hooks/users";
+import { useLogin, useCSRF } from "@/hooks/users";
+
 
 const LoginPage = () => {
+  useCSRF();   // нужен для получения csrf браузером
+
   const router = useRouter();
-  const setAuth = useAuthStore((state) => state.setAuth);
   const loginMutation = useLogin();
   const [showPassword, setShowPassword] = useState(false);
   const {
@@ -31,8 +31,7 @@ const LoginPage = () => {
   const onSubmit = (data: LoginMutation) => {
 
     loginMutation.mutate(data, {
-      onSuccess: (data) => {
-        setAuth({user_name: data.user_name}, data.refresh, data.access);
+      onSuccess: () => {
         router.push('dashboard');
         reset();
       },
