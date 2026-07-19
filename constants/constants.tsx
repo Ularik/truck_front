@@ -21,13 +21,13 @@ export type DashboardMenuItem = {
 export const dashboardMenuItems: DashboardMenuItem[] = [
   {
     label: "Панель",
-    href: "/dashboard",
+    href: "/admin/dashboard",
     roles: ["ADMIN"],
     icon: LayoutDashboard,
   },
   {
     label: "Запчасти",
-    href: "/products",
+    href: "/admin/products",
     roles: ["ADMIN"],
     icon: Wrench,
   },

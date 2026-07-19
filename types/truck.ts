@@ -48,9 +48,9 @@ export interface SparesApiResponse {
 }
 
 export interface SearchFilters {
-  title?: string;
+  search?: string;
   category?: number | null;
   is_popular?: boolean | null;
   limit?: number;
-  page?: number
+  page: number
 }

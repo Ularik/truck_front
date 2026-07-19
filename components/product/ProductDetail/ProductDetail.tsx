@@ -74,9 +74,9 @@ export default function ProductDetailPage({ id }: Props) {
 
         {/* ИНФОРМАЦИЯ (SEO-важная часть, прилетит уже наполненной) */}
         <div className="bg-gray-50 p-3 md:p-6 rounded-2xl mb-6">
-          <p className="text-xl md:text-3xl font-extrabold text-gray-900 mb-4">
+          <h1 className="text-xl md:text-3xl font-extrabold text-gray-900 mb-4">
             {product.title}
-          </p>
+          </h1>
           <p className="text-lg md:text-xl font-semibold text-gray-900 mb-4">
             {product.price.toLocaleString("ru-RU")} сом
           </p>

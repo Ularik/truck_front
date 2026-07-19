@@ -46,7 +46,8 @@ export default function Products() {
 
       <CardsList
         filters={{
-          title: debouncedSearch,
+          search: debouncedSearch,
+          page: 1
         }}
       />
     </section>

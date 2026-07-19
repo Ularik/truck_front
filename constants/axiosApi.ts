@@ -21,6 +21,11 @@ const logoutAndRedirect = async () => {
 };
 
 function getCookie(name: string) {
+  // Проверяем, находимся ли мы в браузере
+  if (typeof window === "undefined") {
+    return undefined;
+  }
+
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
   if (parts.length === 2) return parts.pop()?.split(";").shift();

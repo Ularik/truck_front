@@ -42,6 +42,7 @@ export async function getSpares(
     limit,
     offset,
   };
+  console.log(queryParams)
   const result = await axiosApi.get("/truck/get-spares", {
     params: queryParams,
   });

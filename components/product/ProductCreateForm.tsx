@@ -76,7 +76,7 @@ export default function ProductForm({ editFunc, initialValues }: Props) {
 
     mutate(data, {
       onSuccess: () => {
-        router.push('/products')
+        router.push('/admin/products')
       }
     });
   }

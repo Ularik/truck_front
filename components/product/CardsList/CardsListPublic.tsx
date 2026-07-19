@@ -6,26 +6,24 @@ import { SearchFilters } from "@/types/truck";
 import { PaginationCustom } from "@/components/pagination/PaginationCustom";
 import { useEffect, useState } from "react";
 import { Spinner } from "@/components/ui/spinner";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 
 interface Props {
-  filters?: SearchFilters;
+  filters: SearchFilters;
 }
 
 export default function CardsListPublic({ filters }: Props) {
-  const [page, setPage] = useState(1);
+  const searchParams = useSearchParams();
+  const { data: response, isPending } = useSpares(filters);
 
-  const pagingFilters = { ...filters, page };
-  const { data: response, isPending, refetch } = useSpares(pagingFilters);
-
-  useEffect(() => {
-    refetch();
-  }, [page]);
-
-  useEffect(() => {
-    setPage(1);
-    refetch();
-  }, [filters]);
+  const router = useRouter();
+  const handlePageChange = (newPage: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", newPage.toString());
+    router.push(`?${params.toString()}`);
+  };
 
 
   return (
@@ -38,7 +36,7 @@ export default function CardsListPublic({ filters }: Props) {
       <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-6">
         {response?.result && response.result.length > 0 ? (
           response.result.map((product) => (
-            <ProductCardPublic key={product.id} product={product}/>
+            <ProductCardPublic key={product.id} product={product} />
           ))
         ) : (
           <p className="text-lg text-gray-500 col-span-full text-center py-10">
@@ -50,18 +48,15 @@ export default function CardsListPublic({ filters }: Props) {
       {response && (
         <div className="my-5">
           <PaginationCustom
-            page={page}
+            page={filters.page}
             limit={10}
             totalPage={Number(
               response.count / 10 + (response.count % 10 !== 0 ? 1 : 0),
             )}
-            onChange={(page: number) => {
-              setPage(page);
-            }}
+            onChange={handlePageChange}
           />
         </div>
       )}
-
     </section>
   );
 }

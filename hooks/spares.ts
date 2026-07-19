@@ -4,7 +4,7 @@ import { SearchFilters } from "@/types/truck";
 
 export function useSpares (filters: SearchFilters | undefined) {
     return useQuery({
-      queryKey: ["spares"],
+      queryKey: ["spares", filters],
       queryFn: () => getSpares(filters)
     })
 }
