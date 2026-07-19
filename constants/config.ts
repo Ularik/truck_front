@@ -10,6 +10,4 @@ export const apiURL = isDev
 
 export const imageUrl = isDev
   ? "http://localhost:8001"
-  : typeof window === "undefined"
-    ? "http://backend:8000"
-    : "";
+  : ""
