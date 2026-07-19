@@ -27,7 +27,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html className={cn("h-full", "antialiased", montserrat.variable, "font-sans", geist.variable)}>
+    <html lang="ru" className={cn("h-full", "antialiased", montserrat.variable, "font-sans", geist.variable)}>
       <body className="min-h-full flex flex-col">
           <Providers>{children}</Providers>
           <Toaster/>
