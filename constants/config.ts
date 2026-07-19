@@ -5,11 +5,11 @@ export const isDev = process.env.NODE_ENV === "development";
 export const apiURL = isDev
   ? "http://localhost:8001/api"
   : typeof window === "undefined"
-    ? "http://django_app:8000/api" // имя сервиса из docker-compose + внутренний порт
+    ? "http://backend:8000/api" // имя сервиса из docker-compose + внутренний порт
     : "/api";
 
 export const imageUrl = isDev
   ? "http://localhost:8001"
   : typeof window === "undefined"
-    ? "http://django_app:8000"
+    ? "http://backend:8000"
     : "";
