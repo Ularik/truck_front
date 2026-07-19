@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useDetailSpare } from "@/hooks/spares";
 import { imageUrl } from "@/constants/config";
+import ImageNotFound from "@/media/imageNotFound.jpeg";
 
 interface Props {
   id: string;
@@ -16,12 +17,12 @@ export default function ProductDetailPage({ id }: Props) {
 
     
     const [activeImage, setActiveImage] = useState(
-        "/placeholder.png",
+        ImageNotFound.src,
     );
 
     useEffect(() => {
       if (!isPending && product && product.images.length > 0) {
-        setActiveImage(product.images[0]);
+        setActiveImage(imageUrl + product.images[0]);
       }
     }, [product]);
 
@@ -38,16 +39,16 @@ export default function ProductDetailPage({ id }: Props) {
         )
     }
 
-  const isAvailable = product.count > 0;
+  const isAvailable = product.count > 0 && false;
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 bg-gray-50">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 bg-white p-6 md:p-10 rounded-3xl border border-gray-100 shadow-sm">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12 bg-white p-6 md:p-10 rounded-3xl border border-gray-100 shadow-sm">
         {/* ГАЛЕРЕЯ (Интерактивная часть) */}
         <div className="flex flex-col gap-4">
           <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-gray-50 flex items-center justify-center border">
             <img
-              src={imageUrl + activeImage}
+              src={activeImage}
               alt={product.title}
               className="w-full h-full object-contain p-4"
             />
@@ -72,9 +73,12 @@ export default function ProductDetailPage({ id }: Props) {
         </div>
 
         {/* ИНФОРМАЦИЯ (SEO-важная часть, прилетит уже наполненной) */}
-        <div className="bg-gray-50 p-6 rounded-2xl mb-6">
-          <p className="text-3xl font-extrabold text-gray-900 mb-4">
-            {product.price.toLocaleString("ru-RU")} ₽
+        <div className="bg-gray-50 p-3 md:p-6 rounded-2xl mb-6">
+          <p className="text-xl md:text-3xl font-extrabold text-gray-900 mb-4">
+            {product.title}
+          </p>
+          <p className="text-lg md:text-xl font-semibold text-gray-900 mb-4">
+            {product.price.toLocaleString("ru-RU")} сом
           </p>
 
           {/* Основная кнопка добавления в корзину */}
@@ -111,6 +115,10 @@ export default function ProductDetailPage({ id }: Props) {
               </span>
               <span>Позвонить</span>
             </a>
+          </div>
+
+          <div className="mt-3 md:mt-5 font-semibold text-lg">
+            {product.description}
           </div>
         </div>
       </div>

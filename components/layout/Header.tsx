@@ -17,7 +17,7 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 mb-7">
-      <div className="container flex h-16 items-center justify-between px-[10px] md:px-[20px] mx-auto">
+      <div className="container flex min-h-16 items-center justify-between px-[10px] md:px-[20px] mx-auto">
         <Link href="/" className="flex items-center space-x-2">
           <Code2 className="h-6 w-6 text-primary" />
           <span className="font-bold text-xl tracking-tight">NurStart</span>
@@ -25,15 +25,26 @@ export default function Header() {
 
         {/* Десктопная навигация */}
         <nav className="hidden md:flex items-center space-x-6 text-lg font-medium">
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="transition-colors hover:text-foreground/80 text-foreground/60"
-            >
-              {item.label}
-            </Link>
-          ))}
+          <Link
+            href="/"
+            className="transition-colors hover:text-foreground/80 text-foreground/60"
+          >
+            Каталог
+          </Link>
+          <div className="transition-colors hover:text-foreground/80 text-foreground/60 flex gap-5 items-center py-3">
+            <span>Контакты:</span>
+            <p>
+              <a
+                href={`https://wa.me/996550257798?text=${encodeURIComponent(
+                  `Здравствуйте! Меня интересует товар`,
+                )}`}
+              >
+                +996550257798
+              </a>
+              <br />
+              <a href="tel:+996550176420">+996550176420</a>
+            </p>
+          </div>
         </nav>
 
         {/* Кнопка действия (Десктоп) */}

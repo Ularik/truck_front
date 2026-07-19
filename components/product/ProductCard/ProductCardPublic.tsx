@@ -51,6 +51,7 @@ export function ProductCardPublic({
             size="icon"
             className="h-8 w-8 rounded-full bg-background/80"
             onClick={(e) => {
+              e.stopPropagation();
               e.preventDefault();
               setIsFavorite(!isFavorite);
             }}
