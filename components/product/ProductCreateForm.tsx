@@ -1,7 +1,6 @@
-
 "use client";
 import { Controller, useForm } from "react-hook-form";
-import { Check, ChevronsUpDown, Loader2, X, Trash2 } from "lucide-react";
+import { Check, ChevronsUpDown, Loader2, X } from "lucide-react";
 import {
   Popover,
   PopoverContent,
@@ -28,58 +27,68 @@ import {
 import MultiImageInput from "@/components/dashboard/MultiImageInput/MultiImageInput";
 import { inputClass } from "@/constants/constants";
 import { SparesMutation } from "@/types/truck";
-import { useCreateSpare, useUpdateSpare } from "@/hooks/spares";
 import { useCategories } from "@/hooks/categories";
 import { useTrucks } from "@/hooks/trucks";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
-import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { AxiosError } from "axios";
 
 
 interface Props {
-  editFunc?: (data: SparesMutation) => void;
+  saveFunc: (data: SparesMutation) => void;
+  isLoading: boolean;
+  error: Error | null;
   initialValues?: SparesMutation;
 }
 
-export default function ProductForm({ editFunc, initialValues }: Props) {
+export default function ProductForm({ 
+  saveFunc, 
+  isLoading,
+  error,
+  initialValues 
+}: Props) {
   const {
     register,
     handleSubmit,
     control,
+    setError,
     watch,
     reset,
     formState: { errors },
   } = useForm<SparesMutation>({
     defaultValues: initialValues || {
-      title: '',
-      description: '',
+      title: "",
+      description: "",
       price: 0,
       truck: [],
       category_id: null,
       images: [],
       count: 0,
-      is_popular: false
-    }
+      is_popular: false,
+    },
   });
 
   const { data: trucks, isPaused: isTruckLoading } = useTrucks();
   const { data: categories, isPending: isCatsLoading } = useCategories();
 
-  const router = useRouter();
-  const {
-    mutate,
-    isPending: isLoading,
-    error,
-  } = initialValues ? useUpdateSpare() : useCreateSpare();
-
   const onSubmit = (data: SparesMutation) => {
+    saveFunc(data);
+  };
 
-    mutate(data, {
-      onSuccess: () => {
-        router.push('/admin/products')
-      }
-    });
-  }
+  useEffect(() => {
+    if (!error) return;
+
+    const data = (error as AxiosError<{ detail: {field: string; source: string} }>)
+      .response?.data.detail;
+    if (data?.field) {
+      setError(data.field as keyof SparesMutation, {
+        type: "server",
+        message: data.source ?? "Ошибка сервера",
+      });
+    }
+  }, [error, setError]);
+  
   return (
     <>
       <form
@@ -96,7 +105,13 @@ export default function ProductForm({ editFunc, initialValues }: Props) {
             Название продукта
           </label>
           <Input
-            {...register("title", { required: "Введите название" })}
+            {...register("title", {
+              required: "Введите название",
+              setValueAs: (v) => (typeof v === "string" ? v.trim() : v),
+              validate: (v) =>
+                v.trim().length > 0 ||
+                "Название не может состоять из одних пробелов",
+            })}
             className={`${inputClass} ${errors.title ? "border-red-500 focus-visible:ring-red-500" : ""}`}
             disabled={isLoading}
           />
@@ -296,7 +311,11 @@ export default function ProductForm({ editFunc, initialValues }: Props) {
             Цена
           </label>
           <Input
-            {...register("price", { required: "Введите цену" })}
+            {...register("price", {
+              required: "Введите цену",
+              validate: (v) =>
+                v >= 0 || "Цена не может быть отрицательным числом",
+            })}
             className={`${inputClass} ${errors.price ? "border-red-500 focus-visible:ring-red-500" : ""}`}
             disabled={isLoading}
           />
@@ -312,7 +331,12 @@ export default function ProductForm({ editFunc, initialValues }: Props) {
             Количество
           </label>
           <Input
-            {...register("count", { required: "Введите количество" })}
+            type="number"
+            {...register("count", {
+              required: "Введите количество",
+              validate: (v) =>
+                v >= 0 || "Количество не может быть отрицательным числом",
+            })}
             className={`${inputClass} ${errors.count ? "border-red-500 focus-visible:ring-red-500" : ""}`}
             disabled={isLoading}
           />

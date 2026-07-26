@@ -3,12 +3,29 @@
 import ProductForm from "@/components/product/ProductCreateForm";
 import { useDetailSpare } from "@/hooks/spares";
 import { useParams } from "next/navigation";
+import { useUpdateSpare } from "@/hooks/spares";
+import { SparesMutation } from "@/types/truck";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 
 export default function EditProduct() {
     const params = useParams();
     const id = params.id as string
     const { data: product, isPending, isError } = useDetailSpare(id);
+
+    const { mutate, isPending: isLoading, error } = useUpdateSpare();
+
+    const router = useRouter();
+
+    const onSubmit = (data: SparesMutation) => {
+      mutate(data, {
+        onSuccess: () => {
+          router.push("/admin/products");
+          toast.success("Обновили деталь", { position: "top-center" });
+        }
+      })
+    }
 
       if (isPending) {
         return (
@@ -32,6 +49,9 @@ export default function EditProduct() {
   return (
     <>
       <ProductForm
+        saveFunc={onSubmit}
+        isLoading={isLoading}
+        error={error}
         initialValues={{
           id: product?.id,
           title: product?.title,

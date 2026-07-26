@@ -49,9 +49,9 @@ export default function Header() {
 
         {/* Кнопка действия (Десктоп) */}
         <div className="hidden md:flex items-center space-x-4">
-          <Button variant="ghost" className="text-lg" size="lg">
+          {/* <Button variant="ghost" className="text-lg" size="lg">
             Войти
-          </Button>
+          </Button> */}
         </div>
 
         {/* Кнопка мобильного меню */}
@@ -83,7 +83,7 @@ export default function Header() {
             ))}
             <hr className="my-2 border-muted" />
             <div className="flex flex-col space-y-2">
-              <Button className="w-full justify-center">Войти</Button>
+              {/* <Button className="w-full justify-center">Войти</Button> */}
             </div>
           </nav>
         </div>
